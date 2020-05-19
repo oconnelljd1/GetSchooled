@@ -29,7 +29,7 @@ public class FishSpawner : MonoBehaviour
     private void Update() {
         if(Random.Range(0, 50) < 1)
         {
-            goalPos = RandomTankPos();
+            // goalPos = RandomTankPos();
         }
     }
 
@@ -38,10 +38,10 @@ public class FishSpawner : MonoBehaviour
     {
         Vector3 position = RandomTankPos();
         Quaternion rotation = Quaternion.identity;
-        // rotation.eulerAngles = new Vector3(
-        //     Random.Range(0, 360),
-        //     Random.Range(0, 360),
-        //     Random.Range(0, 360)
+        rotation.eulerAngles = new Vector3(0, Random.Range(0, 360), 0);
+            // Random.Range(0, 360),
+            // Random.Range(0, 360),
+            // Random.Range(0, 360)
         // );
         allFish.Add(Instantiate(fishPrefab, position, rotation));
     }
