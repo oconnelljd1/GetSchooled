@@ -9,37 +9,23 @@ public class School : MonoBehaviour
     public int behaviourFrequency = 5;
 
     [SerializeField]
-    private float moveSpeed = 1, rotSpeed = 1, avoidDist = 1f;
+    private float moveSpeed = 1, avoidDist = 1f;
     [SerializeField]
     private SphereCollider collider;
 
     [HideInInspector]
     public static List<Fish> allFish = new List<Fish>();
-    [HideInInspector]
-    public Vector3 averageHeading{get;private set;}
-    [HideInInspector]
-    public Vector3 averagePosition{get;private set;}
 
     private float initRadius;
-    // private Vector3 targetPosition;
-    // Start is called before the first frame update
+    
     void Start()
     {
-        // targetPosition = transform.position;
         initRadius = collider.radius;
     }
 
     // Update is called once per frame
     private void Update()
     {
-        // Vector3 offset = Vector3.zero;
-        // offset += transform.forward * Input.GetAxis("Vertical");
-        // offset += transform.right * Input.GetAxis("Horizontal");
-        // offset += transform.up * Input.GetAxis("Oblique");
-        // offset = offset.normalized * (moveSpeed * Time.deltaTime);
-        // offset += transform.position;
-        // transform.LookAt(offset);
-        // transform.position = offset;
         Vector3 offset = new Vector3(
             Input.GetAxis("Horizontal"),
             Input.GetAxis("Oblique"),
@@ -69,12 +55,11 @@ public class School : MonoBehaviour
 
     private void ApplyRules()
     {
-        Vector3 vAvoid;
-        Vector3 displacement;
-        Vector3 direction;
+        Vector3 vAvoid = new Vector3();
+        Vector3 displacement = new Vector3();
+        Vector3 direction = new Vector3();
         foreach(Fish fish in allFish)
         {
-            // Debug.Log(vCenter, fish);
             if(Random.Range(0, behaviourFrequency) > 1)
             {
                 continue;
@@ -92,18 +77,7 @@ public class School : MonoBehaviour
                     vAvoid += (fish.transform.position - otherFish.transform.position);
                 }
             }
-            direction = (transform.position - fish.transform.position) + vAvoid;
-            if(direction != Vector3.zero)
-            {
-                // Debug.Log(direction);
-                fish.transform.LookAt(fish.transform.position + direction);
-                // fish.transform.Rotate(direction.normalized * rotSpeed * Time.deltaTime);
-                // fish.transform.Translate(0, 0, Time.deltaTime * moveSpeed);
-            }
-            else
-            {
-                // add perlin noise
-            }
+            fish.direction = transform.position - fish.transform.position + vAvoid;
         }
     }
 }

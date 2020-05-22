@@ -44,6 +44,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e4154a1d65ceb84bbea6929ea02d06e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  direction: {x: 0, y: 0, z: 0}
+  moveSpeed: 1
+  rotSpeed: 1
 --- !u!54 &3281738308131662161
 Rigidbody:
   m_ObjectHideFlags: 0
