@@ -16,6 +16,7 @@ public class School : MonoBehaviour
     [HideInInspector]
     public static List<Fish> allFish = new List<Fish>();
 
+    private Vector3 globalHeading;
     private float initRadius;
     
     void Start()
@@ -56,6 +57,7 @@ public class School : MonoBehaviour
     private void ApplyRules()
     {
         Vector3 vAvoid = new Vector3();
+        Vector3 gHeading = new Vector3();
         Vector3 displacement = new Vector3();
         Vector3 direction = new Vector3();
         foreach(Fish fish in allFish)
@@ -77,7 +79,10 @@ public class School : MonoBehaviour
                     vAvoid += (fish.transform.position - otherFish.transform.position);
                 }
             }
-            fish.direction = transform.position - fish.transform.position + vAvoid;
+            direction = vAvoid - fish.transform.position;// + globalHeading;
+            fish.direction = transform.position + direction;
+            gHeading += fish.direction;
         }
+        globalHeading = gHeading / allFish.Count;
     }
 }
