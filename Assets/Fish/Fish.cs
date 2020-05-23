@@ -16,12 +16,36 @@ public class Fish : MonoBehaviour
 
     private void Update()
     {
-        RaycastHit hit;
-        Physics.Raycast(transform.position, transform.forward, out hit, detectionDist, layerMask, QueryTriggerInteraction.Ignore);
+        RaycastHit hit1;
+        Physics.Raycast(transform.position, transform.forward, out hit1, detectionDist, layerMask, QueryTriggerInteraction.Ignore);
         Debug.DrawLine(transform.position, transform.position + (transform.forward * detectionDist), Color.red);
-        if(hit.collider != null)
+        if(hit1.collider != null)
         {
-            direction = -transform.forward;
+            RaycastHit hit2;
+            Physics.Raycast(
+                transform.position,
+                Vector3.RotateTowards(transform.forward, transform.right, rotSpeed * Time.deltaTime, 0f),
+                out hit1,
+                detectionDist,
+                layerMask,
+                QueryTriggerInteraction.Ignore
+            );
+            Physics.Raycast(
+                transform.position,
+                Vector3.RotateTowards(transform.forward, -transform.right, rotSpeed * Time.deltaTime, 0f),
+                out hit2,
+                detectionDist,
+                layerMask,
+                QueryTriggerInteraction.Ignore
+            );
+            if(hit1.distance < hit2.distance)
+            {
+                direction = -transform.right;
+            }
+            else
+            {
+                direction = transform.right;
+            }
         }
         transform.Translate(0, 0, Time.deltaTime * moveSpeed);
         if(direction != Vector3.zero)
