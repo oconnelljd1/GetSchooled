@@ -27,13 +27,6 @@ public class School : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        Vector3 offset = new Vector3(
-            Input.GetAxis("Horizontal"),
-            Input.GetAxis("Oblique"),
-            Input.GetAxis("Vertical")
-        ).normalized * (Time.deltaTime * moveSpeed);
-        transform.position += offset;
-
         if(allFish.Count > 0)
         {
             ApplyRules();
