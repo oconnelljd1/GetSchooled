@@ -26,10 +26,6 @@ public class CameraController : MonoBehaviour
         }
 
         // Calculate the direction that you want the school to face
-        // Vector3 direction = target.position;
-        // direction.y += Input.GetAxisRaw("Oblique");
-        // direction.x += Mathf.Sin(lastRotation * Mathf.Deg2Rad) * Input.GetAxisRaw("Vertical");
-        // direction.z += Mathf.Cos(lastRotation * Mathf.Deg2Rad) * Input.GetAxisRaw("Vertical");
         Vector3 direction = new Vector3(
             Mathf.Sin(lastRotation * Mathf.Deg2Rad) * Input.GetAxisRaw("Vertical"),
             Input.GetAxisRaw("Oblique"),
