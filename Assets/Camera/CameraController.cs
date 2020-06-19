@@ -7,51 +7,44 @@ public class CameraController : MonoBehaviour
     [SerializeField]
     private Transform target;
     [SerializeField]
-    private float maxFollowDist = 10f, minFollowDist = 5f, moveSpeed = 1f, rotSpeed = 45f;
-    private float lastRotation;
+    private float maxFollowDist = 10f, minFollowDist = 5f, moveSpeed = 1f, rotSmoothTime = 0.1f;
+    [SerializeField]
+    private Vector2 rotSpeed;
+
+    private float yaw = 0f, pitch = 0f;
+    private Vector2 pitchMinMax = new Vector2(-45f, 89f);
+    private Vector3 currentRotation, rotSmoothVel;
 
     void Start()
     {
-        lastRotation = transform.eulerAngles.y;
+        // lastRotation = transform.eulerAngles.y;
+        currentRotation = transform.eulerAngles;
         transform.position = target.position - (target.forward * 8) + (Vector3.up * 6);
     }
 
-    void Update()
+    void LateUpdate()
     {
-        if(Input.GetButton("Horizontal"))
-        {
-            // Rotate camera around school
-            transform.RotateAround(target.position, Vector3.up, Input.GetAxis("Horizontal") * rotSpeed * Time.deltaTime);
-            lastRotation = transform.eulerAngles.y;
-        }
+        yaw += Input.GetAxis("Mouse X") * rotSpeed.x;
+        pitch -= Input.GetAxis("Mouse Y") * rotSpeed.y;
+        pitch = Mathf.Clamp(pitch, pitchMinMax.x, pitchMinMax.y);
+
+        currentRotation =  Vector3.SmoothDamp(currentRotation, new Vector3(pitch, yaw), ref rotSmoothVel, rotSmoothTime);
+        transform.eulerAngles = currentRotation;
+        transform.position = target.position - transform.forward * maxFollowDist;
 
         // Calculate the direction that you want the school to face
         Vector3 direction = new Vector3(
-            Mathf.Sin(lastRotation * Mathf.Deg2Rad) * Input.GetAxisRaw("Vertical"),
+            Mathf.Sin(currentRotation.y * Mathf.Deg2Rad) * Input.GetAxisRaw("Vertical"),
             Input.GetAxisRaw("Oblique"),
-            Mathf.Cos(lastRotation * Mathf.Deg2Rad) * Input.GetAxisRaw("Vertical")
+            Mathf.Cos(currentRotation.y * Mathf.Deg2Rad) * Input.GetAxisRaw("Vertical")
         ).normalized;
 
         if(direction != Vector3.zero)
         {
             // rotate the school towards the direction it is supposed to move in
-            target.rotation = Quaternion.LookRotation(Vector3.RotateTowards(target.forward, direction , rotSpeed * Time.deltaTime * Mathf.Deg2Rad, 0f));
+            target.rotation = Quaternion.LookRotation(Vector3.RotateTowards(target.forward, direction, 90 * Time.deltaTime * Mathf.Deg2Rad, 0f));
             // Move the school forwards
             target.Translate(Vector3.forward * Time.deltaTime * moveSpeed);
         }
-
-        Vector3 distance = transform.position - target.position;
-        // Move camera in the direction the school is facing if it is too far away
-        if(distance.sqrMagnitude > Mathf.Pow(maxFollowDist, 2))
-        {
-            transform.position += target.forward * Time.deltaTime * moveSpeed;
-        }
-        // Move camera away from school if it is too close
-        else if(distance.sqrMagnitude < Mathf.Pow(minFollowDist, 2))
-        {
-            transform.position += distance.normalized * Time.deltaTime * moveSpeed;
-        }
-        // Look at the school
-        transform.LookAt(target.position);
     }
 }
