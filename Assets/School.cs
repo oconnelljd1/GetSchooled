@@ -4,17 +4,13 @@ using UnityEngine;
 
 public class School : MonoBehaviour
 {
-    [SerializeField]
-    private float moveSpeed = 1, avoidDist = 1f;
-    [Range(0, 10)]
-    public int behaviourFrequency = 5;
-    [HideInInspector]
-    public static List<Fish> allFish = new List<Fish>();
-    [HideInInspector]
-    public Vector3 averageHeading{get;private set;}
-    [HideInInspector]
-    public Vector3 averagePosition{get;private set;}
+    [SerializeField] private float moveSpeed = 1, avoidDist = 1f;
+    [Range(0, 10)] public int behaviourFrequency = 5;
+    [HideInInspector] public static List<Fish> allFish = new List<Fish>();
+    [HideInInspector] public Vector3 averageHeading{get;private set;}
+    [HideInInspector] public Vector3 averagePosition{get;private set;}
     private Vector3 targetPosition;
+    
     // Start is called before the first frame update
     void Start()
     {

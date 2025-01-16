@@ -4,12 +4,10 @@ using UnityEngine;
 
 public class FishSpawner : MonoBehaviour
 {
-    [SerializeField]
-    private GameObject fishPrefab;
-    [SerializeField]
-    private int initialFish = 2;
-    [SerializeField]
-    private Vector3 tankDimensions = new Vector3(1,1,1);
+    [SerializeField] private GameObject fishPrefab;
+    [SerializeField] private int initialFish = 2;
+    [SerializeField] private Vector3 tankDimensions = new Vector3(1,1,1);
+
     // Start is called before the first frame update
     void Start()
     {
@@ -22,11 +20,5 @@ public class FishSpawner : MonoBehaviour
             );
             Instantiate(fishPrefab, position, new Quaternion());
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }
